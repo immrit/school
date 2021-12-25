@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false, 
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -74,6 +74,7 @@ class MyHomePage extends StatelessWidget {
                         color: Colors.blue,
                         padding: const EdgeInsets.all(15))
                     .margin9,
+                Button(title: "title", ontap: (){}, )
               ],
             ),
           ],
