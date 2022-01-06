@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:school/Bloc/UserBloc.dart';
@@ -5,6 +6,7 @@ import 'package:school/screen/dashboard.dart';
 import 'Bloc/BlocState.dart';
 import 'module/extension.dart';
 import 'module/widgets.dart';
+import 'package:bloc/bloc.dart';
 
 void main() {
   runApp(MultiBlocProvider(
@@ -25,17 +27,22 @@ class MyApp extends StatelessWidget {
       ),
       home: BlocBuilder<UserBloc, BlocState>(builder: (context, state) {
         if (state is Autanticated) return Dashboard();
-        return Login();
+        return Login(
+          state: state,
+        );
       }),
     );
   }
 }
 
 class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
+  final BlocState state;
+  const Login({Key? key, required this.state}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _mobile = TextEditingController();
+    TextEditingController _pass = TextEditingController();
     return Scaffold(
       body: SafeArea(
           child: Container(
@@ -46,21 +53,23 @@ class Login extends StatelessWidget {
             // SizedBox(
             //   height: context.height * .15,
             // ),
-            const Lable(
+            Lable(
               title: "School site",
               bold: true,
               color: Colors.grey,
               fontsize: 29,
             ).vMargin9,
-            const Edit(
+            Edit(
               hint: "username",
+              controller: _mobile,
               autofocus: true,
               password: false,
             ).margin9,
-            const Edit(
+            Edit(
               hint: "password",
               password: true,
               autofocus: false,
+              controller: _pass,
             ).margin9,
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -74,21 +83,33 @@ class Login extends StatelessWidget {
                         color: Colors.green,
                         padding: const EdgeInsets.all(15))
                     .margin9,
+                state is Loading ? CupertinoActivityIndicator() : Container(),
                 Button(
                         title: "login",
-                        ontap: () => print("clicked!"),
+                        ontap: () => context
+                            .read<UserBloc>()
+                            .autanticated(_mobile.text, _pass.text),
                         icon: const Icon(
                           Icons.vpn_key,
                         ),
                         color: Colors.blue,
                         padding: const EdgeInsets.all(15))
                     .margin9,
-                Button(
-                  title: "title",
-                  ontap: () {},
-                )
               ],
             ),
+            state is Failed
+                ? Container(
+                    margin: EdgeInsets.all(25),
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(18)),
+                    child: Text(
+                      " ${(state as Failed).exception.toString()}",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
+                : Container()
           ],
         ),
       ).padding9.card.center),
