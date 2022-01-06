@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:school/module/extension.dart';
-import 'package:school/module/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:school/Bloc/UserBloc.dart';
+import 'package:school/screen/dashboard.dart';
+import 'Bloc/BlocState.dart';
+import 'module/extension.dart';
+import 'module/widgets.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiBlocProvider(
+      providers: [BlocProvider<UserBloc>(create: (_) => UserBloc())],
+      child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,18 +18,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, 
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(),
+      home: BlocBuilder<UserBloc, BlocState>(builder: (context, state) {
+        if (state is Autanticated) return Dashboard();
+        return Login();
+      }),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+class Login extends StatelessWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +83,10 @@ class MyHomePage extends StatelessWidget {
                         color: Colors.blue,
                         padding: const EdgeInsets.all(15))
                     .margin9,
-                Button(title: "title", ontap: (){}, )
+                Button(
+                  title: "title",
+                  ontap: () {},
+                )
               ],
             ),
           ],
