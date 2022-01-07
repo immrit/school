@@ -71,31 +71,34 @@ class Login extends StatelessWidget {
               autofocus: false,
               controller: _pass,
             ).margin9,
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Button(
-                        title: "register",
-                        ontap: () => print("clicked!"),
-                        icon: const Icon(
-                          Icons.person_add_alt_1,
-                        ),
-                        color: Colors.green,
-                        padding: const EdgeInsets.all(15))
-                    .margin9,
-                state is Loading ? CupertinoActivityIndicator() : Container(),
-                Button(
-                        title: "login",
-                        ontap: () => context
-                            .read<UserBloc>()
-                            .autanticated(_mobile.text, _pass.text),
-                        icon: const Icon(
-                          Icons.vpn_key,
-                        ),
-                        color: Colors.blue,
-                        padding: const EdgeInsets.all(15))
-                    .margin9,
-              ],
+            AbsorbPointer(
+              absorbing: state is Loading,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Button(
+                          title: "register",
+                          ontap: () => print("clicked!"),
+                          icon: const Icon(
+                            Icons.person_add_alt_1,
+                          ),
+                          color: Colors.green,
+                          padding: const EdgeInsets.all(15))
+                      .margin9,
+                  state is Loading ? CupertinoActivityIndicator() : Container(),
+                  Button(
+                          title: "login",
+                          ontap: () => context
+                              .read<UserBloc>()
+                              .autanticated(_mobile.text, _pass.text),
+                          icon: const Icon(
+                            Icons.vpn_key,
+                          ),
+                          color: Colors.blue,
+                          padding: const EdgeInsets.all(15))
+                      .margin9,
+                ],
+              ),
             ),
             state is Failed
                 ? Container(
@@ -105,8 +108,11 @@ class Login extends StatelessWidget {
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(18)),
                     child: Text(
-                      " ${(state as Failed).exception.toString()}",
-                      style: TextStyle(color: Colors.white),
+                      " ${(state as Failed).exception.toString()}"
+                          .replaceAll("Exception:", "Warning:"),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   )
                 : Container()
