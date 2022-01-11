@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../Bloc/UserBloc.dart';
 import 'widgets.dart';
+import 'package:provider/provider.dart';
 
 extension ContextExtension on BuildContext {
   double get width => MediaQuery.of(this).size.width;
   double get height => MediaQuery.of(this).size.height;
+  UserBloc get userBloc => this.read<UserBloc>();
 }
 
 extension WidgetExtension on Widget {
@@ -40,7 +43,6 @@ extension WidgetExtension on Widget {
   Widget get padding3 => Container(padding: EdgeInsets.all(3), child: this);
   Widget get padding6 => Container(padding: EdgeInsets.all(6), child: this);
   Widget get padding9 => Container(padding: EdgeInsets.all(9), child: this);
-
   Widget get card => Card(child: this);
   Widget get center => Center(child: this);
 }

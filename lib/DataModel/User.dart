@@ -51,4 +51,10 @@ class User {
       : this.type == 2
           ? "teacher"
           : "student";
+
+  // Object get familiType => this.family == "Hassani"
+  //     ? typeName == 1
+  //     : this.family == "esn"
+  //         ? typeName == 2
+  //         : "null";
 }

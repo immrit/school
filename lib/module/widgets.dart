@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
   final String title;
-  final VoidCallback ontap;
+  final VoidCallback? ontap;
   final Icon? icon;
   final Color? color;
   final Color? color_txt;
@@ -10,7 +10,7 @@ class Button extends StatelessWidget {
   const Button({
     Key? key,
     required this.title,
-    required this.ontap,
+    this.ontap,
     this.icon,
     this.color,
     this.color_txt,
@@ -72,6 +72,7 @@ class Edit extends StatelessWidget {
   final Function(String)? onchange;
   final bool autofocus;
   final bool password;
+  final bool notempty;
   final TextEditingController? controller;
 
   const Edit({
@@ -80,6 +81,7 @@ class Edit extends StatelessWidget {
     this.onchange,
     required this.autofocus,
     required this.password,
+    this.notempty = false,
     this.controller,
   }) : super(key: key);
 
@@ -94,6 +96,11 @@ class Edit extends StatelessWidget {
       obscureText: password,
       controller: controller,
       onChanged: onchange,
+      validator: (val) {
+        if ((val ?? "").isEmpty && this.notempty) {
+          return "cannot be empty";
+        }
+      },
     );
   }
 }

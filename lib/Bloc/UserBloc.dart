@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:school/Repository/UserRepo.dart';
+import '../Repository/UserRepo.dart';
 import 'BlocState.dart';
 import '../DataModel/User.dart';
 
@@ -20,4 +20,5 @@ class UserBloc extends Cubit<BlocState> {
   }
 
   User? get user => _user;
+  void SignOut() => emit(Initial());
 }
